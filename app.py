@@ -1,43 +1,65 @@
-from tkinter import *
+import tkinter as tk
 from PIL import ImageTk, Image
-
-root = Tk()  # create root window
+from tkinter import filedialog
+root = tk.Tk()  # create root window
 root.title("Basic GUI Layout")  # title of the GUI window
 root.maxsize(900, 600)  # specify the max size the window can expand to
 root.config(bg="skyblue")  # specify background color
 
 # Create left and right frames
-left_frame = Frame(root, width=200, height=400, bg='grey')
+left_frame = tk.Frame(root, width=200, height=400, bg='grey')
 left_frame.grid(row=0, column=0, padx=10, pady=5)
 
-right_frame = Frame(root, width=650, height=400, bg='grey')
+right_frame = tk.Frame(root, width=650, height=400, bg='grey')
 right_frame.grid(row=0, column=1, padx=10, pady=5)
 
+def loadPreview():
+    filename = filedialog.askopenfilename()
+    imagenOriginal=Image.open(filename)
+    imagenOriginal.thumbnail((350,350))
+    image = ImageTk.PhotoImage(imagenOriginal)
+    preview.configure(image=image)
+    preview.image=image
+   
 # Create frames and labels in left_frame
-Label(left_frame, text="Original Image").grid(row=0, column=0, padx=5, pady=5)
+cargar=tk.Button(left_frame,text="Cargar imagen",command=loadPreview).grid(row=0, column=0, padx=5, pady=5)
 
 # load image to be "edited"
 imagenOriginal=Image.open("imagen.jpg")
 imagenOriginal.thumbnail((350,350))
 image = ImageTk.PhotoImage(imagenOriginal)
 #original_image = image.subsample(3,3)  # resize image using subsample
-Label(left_frame, image=image).grid(row=1, column=0, padx=5, pady=5)
+
+preview=tk.Label(left_frame,image=image)
+preview.grid(row=1, column=0, padx=5, pady=5)
 
 # Display image in right_frame
-Label(right_frame, image=image).grid(row=0,column=0, padx=5, pady=5)
+final=tk.Label(right_frame, image=image)
+final.grid(row=0,column=0, padx=5, pady=5)
 
 # Create tool bar frame
-tool_bar = Frame(left_frame, width=180, height=185)
+tool_bar = tk.Frame(left_frame, width=180, height=185)
 tool_bar.grid(row=2, column=0, padx=5, pady=5)
 
 # Example labels that serve as placeholders for other widgets
-Label(tool_bar, text="Tools", relief=RAISED).grid(row=0, column=0, padx=5, pady=3, ipadx=10)  # ipadx is padding inside the Label widget
-Label(tool_bar, text="Filters", relief=RAISED).grid(row=0, column=1, padx=5, pady=3, ipadx=10)
+tk.Label(tool_bar, text="Aplicar ruido").grid(row=0, column=0, padx=5, pady=3, ipadx=10)  # ipadx is padding inside the Label widget
+tk.Label(tool_bar, text="Filtro de restaurado").grid(row=0, column=1, padx=5, pady=3, ipadx=10)
+
+
+
+def aplicar():
+    newImagen=preview.image
+    final.configure(image=newImagen)
+    final.image=newImagen
+
+
 
 # Example labels that could be displayed under the "Tool" menu
-Label(tool_bar, text="Select").grid(row=1, column=0, padx=5, pady=5)
-Label(tool_bar, text="Crop").grid(row=2, column=0, padx=5, pady=5)
-Label(tool_bar, text="Rotate & Flip").grid(row=3, column=0, padx=5, pady=5)
-Label(tool_bar, text="Resize").grid(row=4, column=0, padx=5, pady=5)
-Label(tool_bar, text="Exposure").grid(row=5, column=0, padx=5, pady=5)
+tk.Button(tool_bar, text="Sal y pimienta",command=aplicar).grid(row=1, column=0, padx=5, pady=5)
+tk.Button(tool_bar, text="Gasussiano",command=aplicar).grid(row=2, column=0, padx=5, pady=5)
+tk.Button(tool_bar, text="Restaurar 1",command=aplicar).grid(row=1, column=1, padx=5, pady=5)
+tk.Button(tool_bar, text="Restarurar 2",command=aplicar).grid(row=2, column=1, padx=5, pady=5)
+
+root.bind("<Return>", loadPreview)
+root.bind("<Return>", aplicar)
 root.mainloop()
