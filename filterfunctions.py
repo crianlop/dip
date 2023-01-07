@@ -21,7 +21,8 @@ def gaussNoiseFilter(img):
     return processed_image
 
 def saltPepperFilter(img):
-    processed_image = cv2.medianBlur(image, 3)
+    processed_image = cv2.medianBlur(img, 3)
+    processed_image = cv2.medianBlur(processed_image, 3)
     return processed_image
 def saltPepper(img):
     if(len(img.shape)!= 2):
@@ -32,10 +33,11 @@ def saltPepper(img):
     for i in range(number_of_pixels):
         y_coord=random.randint(0, row - 1)
         x_coord=random.randint(0, col - 1)
-        img[y_coord][x_coord] = 255
+        noisy_img[y_coord][x_coord] = 255
     number_of_pixels = random.randint(300 , 10000)
     for i in range(number_of_pixels):
         y_coord=random.randint(0, row - 1)
         x_coord=random.randint(0, col - 1)
-        img[y_coord][x_coord] = 0
+        noisy_img[y_coord][x_coord] = 0
     return noisy_img
+
