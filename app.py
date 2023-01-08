@@ -5,7 +5,7 @@ import filterfunctions as fd
 import cv2
 import numpy as np
 root = tk.Tk()  # create root window
-root.title("Basic GUI Layout")  # title of the GUI window
+root.title("Proyecto DIP")  # title of the GUI window
 root.maxsize(900, 600)  # specify the max size the window can expand to
 root.config(bg="skyblue")  # specify background color
 
