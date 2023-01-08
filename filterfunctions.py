@@ -9,6 +9,7 @@ def gaussNoise(img):
     var = 1000
     sigma = var ** 0.5
     gaussian = np.random.normal(mean, sigma, (img.shape[0],img.shape[1])) 
+    gaussian = gaussian.astype(int)
     noisy_image = np.zeros(img.shape, np.float32)
     noisy_image = img + gaussian
     cv2.normalize(noisy_image, noisy_image, 0, 255, cv2.NORM_MINMAX, dtype=-1)
@@ -24,6 +25,7 @@ def saltPepperFilter(img):
     processed_image = cv2.medianBlur(img, 3)
     processed_image = cv2.medianBlur(processed_image, 3)
     return processed_image
+    
 def saltPepper(img):
     if(len(img.shape)!= 2):
         img = img[:,:,0]
@@ -40,4 +42,3 @@ def saltPepper(img):
         x_coord=random.randint(0, col - 1)
         noisy_img[y_coord][x_coord] = 0
     return noisy_img
-
