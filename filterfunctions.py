@@ -27,10 +27,10 @@ def saltPepperFilter(img):
     return processed_image
     
 def saltPepper(img):
-    if(len(img.shape)!= 2):
-        img = img[:,:,0]
+    noisy_img = img.copy()
+    if(len(noisy_img.shape)!= 2):
+        img = noisy_img[:,:,0]
     row , col = img.shape
-    noisy_img = np.copy(img)
     number_of_pixels = random.randint(300, 10000)
     for i in range(number_of_pixels):
         y_coord=random.randint(0, row - 1)
