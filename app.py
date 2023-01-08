@@ -65,12 +65,13 @@ def aplicarsp():
     copia=imagenOriginal.copy()
     cvimage=np.array(copia)
     cvimage=cvimage[:, :, ::-1].copy()
-    fd.saltPepper(cvimage)
+    salty=fd.saltPepper(cvimage)
+    
     name=filename.split("/")[-1]
     newname="noisesp_"+name
-    cv2.imwrite(newname,cvimage)
+    cv2.imwrite(newname,salty)
 
-    img = cv2.cvtColor(cvimage, cv2.COLOR_BGR2RGB)
+    img = cv2.cvtColor(salty, cv2.COLOR_BGR2RGB)
     pilimg = Image.fromarray(img)
     pilimg.thumbnail((350,350))
     finalimg=ImageTk.PhotoImage(pilimg)
@@ -83,10 +84,10 @@ def filtrosp():
     restname="restoredsp_"+name
     image=cv2.imread(newname)
     copia=image.copy()
-    fd.saltPepperFilter(copia)
+    filtrado=fd.saltPepperFilter(copia)
 
-    cv2.imwrite(restname,copia)
-    img = cv2.cvtColor(copia, cv2.COLOR_BGR2RGB)
+    cv2.imwrite(restname,filtrado)
+    img = cv2.cvtColor(filtrado, cv2.COLOR_BGR2RGB)
     pilimg = Image.fromarray(img)
     pilimg.thumbnail((350,350))
     finalimg=ImageTk.PhotoImage(pilimg)
