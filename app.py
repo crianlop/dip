@@ -60,7 +60,7 @@ def aplicar():
     final.configure(image=newImagen)
     final.image=newImagen
 
-
+    
 def aplicarsp():
     copia=imagenOriginal.copy()
     cvimage=np.array(copia)
@@ -94,13 +94,48 @@ def filtrosp():
     final.configure(image=finalimg)
     final.image=finalimg
 
+def aplicarGauss():
+    copia=imagenOriginal.copy()
+    cvimage=np.array(copia)
+    cvimage=cvimage[:, :, ::-1].copy()
+    salty=fd.gaussNoise(cvimage)
+    
+    name=filename.split("/")[-1]
+    newname="noisgaus_"+name
+    cv2.imwrite(newname,salty)
+
+    #img = cv2.cvtColor(salty, cv2.COLOR_BGR2RGB)
+    pilimg = Image.open(newname)
+    pilimg.thumbnail((350,350))
+    finalimg=ImageTk.PhotoImage(pilimg)
+    final.configure(image=finalimg)
+    final.image=finalimg
+
+def filtroGauss():
+    name=filename.split("/")[-1]
+    newname="noisgaus_"+name
+    restname="restoredgauss_"+name
+    image=cv2.imread(newname)
+    copia=image.copy()
+    filtrado=fd.gaussNoiseFilter(copia)
+
+    cv2.imwrite(restname,filtrado)
+    img = cv2.cvtColor(filtrado, cv2.COLOR_BGR2RGB)
+    pilimg = Image.fromarray(img)
+    pilimg.thumbnail((350,350))
+    finalimg=ImageTk.PhotoImage(pilimg)
+    final.configure(image=finalimg)
+    final.image=finalimg
+
 # Example labels that could be displayed under the "Tool" menu
 tk.Button(tool_bar, text="Sal y pimienta",command=lambda:aplicarsp()).grid(row=1, column=0, padx=5, pady=5)
-tk.Button(tool_bar, text="Gasussiano",command=aplicar).grid(row=2, column=0, padx=5, pady=5)
+tk.Button(tool_bar, text="Gasussiano",command=lambda:aplicarGauss()).grid(row=2, column=0, padx=5, pady=5)
 tk.Button(tool_bar, text="Restaurar Sal y pimienta",command=lambda:filtrosp()).grid(row=1, column=1, padx=5, pady=5)
-tk.Button(tool_bar, text="Restarurar 2",command=aplicar).grid(row=2, column=1, padx=5, pady=5)
+tk.Button(tool_bar, text="Restarurar 2",command=lambda:filtroGauss()).grid(row=2, column=1, padx=5, pady=5)
 
 root.bind("<Return>", loadPreview)
 root.bind("<Return>", aplicarsp)
 root.bind("<Return>", filtrosp)
+root.bind("<Return>", aplicarGauss)
+root.bind("<Return>", filtroGauss)
 root.mainloop()
