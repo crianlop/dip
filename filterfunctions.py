@@ -3,18 +3,16 @@ import cv2
 import random
 
 def gaussNoise(img):
-    if(len(img.shape)!= 2):
-        img = img[:,:,0]
+    noisy_img = img.copy()
+    row,col,ch= noisy_img.shape
     mean = 0
-    var = 1000
-    sigma = var ** 0.5
-    gaussian = np.random.normal(mean, sigma, (img.shape[0],img.shape[1])) 
-    gaussian = gaussian.astype(int)
-    noisy_image = np.zeros(img.shape, np.float32)
-    noisy_image = img + gaussian
-    cv2.normalize(noisy_image, noisy_image, 0, 255, cv2.NORM_MINMAX, dtype=-1)
-    noisy_image = noisy_image.astype(np.uint8)
-    return noisy_image
+    var = 50
+    sigma = var**0.5
+    gauss = np.random.normal(mean,sigma,(row,col,ch))
+    gauss = gauss.reshape(row,col,ch)
+    noisy = noisy_img + gauss
+    return noisy
+    
 
 def gaussNoiseFilter(img):
     kernel = np.ones((3,3),np.float32)/9
